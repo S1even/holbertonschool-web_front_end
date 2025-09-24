@@ -716,7 +716,7 @@
 ============================= */
 
 .form-group {
-  margin: 1rem;
+  padding: 1rem;
   margin: 0;
   background-color: var(--color-white);
 }
@@ -729,13 +729,13 @@
 /* Form field
 ============================= */
 
-.form-field-contaoner {
+.form-field-container {
     position: relative;
 }
 
 .form-field-icon {
-    font-size: normal;
-}
+    font-style: normal;
+  }
 
 /* Form help
 ============================= */
@@ -751,7 +751,7 @@
     overflow: hidden;
 }
 
-.form-help:focus-within .form-help {
+.form-group:focus-within .form-help {
     max-height: 20rem;
     margin: .4rem 0 0;
-}
+  }
