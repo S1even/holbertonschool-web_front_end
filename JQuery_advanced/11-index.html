@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Task 11</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="application/javascript">
+        $(document).ready(() => {
+            function addPostRow(data) {
+                let p = $("<p>").append("span").text(`Post created with id: ${data.id}, title: ${data.title}, author: ${data.author}`);
+                $("body").append(p);
+            }
+
+            function sendForm() {
+                let formData = {
+                    author: $('#author').val(),
+                    title: $('#title').val()
+                };
+
+                $('#postForm').after('<p>About to send the query to the API</p>');
+
+                $.ajax({
+                    url: 'http://localhost:3000/posts',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (data) {
+                        addPostRow(data);
+                    },
+                    error: function () {
+                        alert('Error sending the POST query');
+                    }
+                });
+            };
+
+            function listPosts() {
+                $.get('http://localhost:3000/posts', function (response) {
+                    response.forEach(function (data) {
+                        addPostRow(data);
+                    });
+                }).fail(function () {
+                    alert('Server Error');
+                });
+            }
+
+            function buildForm() {
+                let form = $('<form>');
+                let authorDiv = $('<div>');
+                let authorLabel = $('<label>').attr('for', 'author').text('Author');
+                let authorInput = $('<input>').attr({ type: 'text', id: 'author' });
+                authorDiv.append(authorLabel, authorInput);
+
+                let titleDiv = $('<div>');
+                let titleLabel = $('<label>').attr('for', 'title').text('Title');
+                let titleTextarea = $('<textarea>').attr({ id: 'title' });
+                titleDiv.append(titleLabel, titleTextarea);
+
+                let submitButton = $('<input>').attr({ type: 'submit', value: 'Submit' });
+
+                form.append(authorDiv, titleDiv, submitButton);
+                $('body').append(form);
+                form.submit(function (event) {
+                    event.preventDefault();
+                    sendForm();
+                });
+                $('label').click(function () {
+                    let inputId = $(this).attr('for');
+                    $('#' + inputId).focus().select();
+                });
+            }
+            buildForm();
+            listPosts();
+        });
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
